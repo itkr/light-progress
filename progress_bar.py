@@ -26,34 +26,42 @@ class ProgressBar(object):
             current=self.current_num,
             max=self.max_num)
 
-    def is_end(self):
+    def is_finished(self):
         return self.max_num <= self.current_num
 
     def forward(self):
         self.current_num = min(self.max_num, self.current_num + self.unit_num)
-        self.echo()
+        self.echo(self._get_str(), 'OK')
 
     def back(self):
         self.current_num = max(0, self.current_num - self.unit_num)
-        self.echo()
+        self.echo(self._get_str(), 'OK')
 
-    def echo(self):
-        sys.stderr.write('\r\033[94m{}\033[0m'.format(self._get_str()))
+    def echo(self, message, message_type=None):
+        color = {
+            'OK': '\033[94m',
+            'SUCCESS': '\033[92m',
+            'WARNING': '\033[93m',
+            'FAIL': '\033[91m',
+        }.get(message_type)
+        sys.stderr.write(
+            ''.join([color, message, '\r\033[0m']) if color else message)
         sys.stderr.flush()
 
     def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
-        sys.stderr.write('\n')
-        sys.stderr.flush()
+        _ = self.echo('\n') if self.is_finished() else self.echo(
+            self._get_str(), 'FAIL')
 #
 #
 #def check():
 #    from time import sleep
-#    while True:
-#        with ProgressBar(100) as progress_bar:
-#            if progress_bar.is_end():
+#    with ProgressBar(100, 1) as progress_bar:
+#        while True:
+#            if progress_bar.is_finished():
 #                return
 #            sleep(0.01)
 #            progress_bar.forward()
+#check()

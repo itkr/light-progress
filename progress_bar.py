@@ -6,6 +6,9 @@ import sys
 class ProgressBar(object):
 
     LENGTH = 30
+    BAR = '='
+    TIP = '-'
+    BASE = '.'
 
     def __init__(self, max_num, unit_num=1):
         self.max_num = max_num
@@ -19,9 +22,9 @@ class ProgressBar(object):
     def _get_str(self):
         bar = int(self.LENGTH * self.progress)
         return '[{bar}{tip}{base}] {progress}% ({current}/{max})'.format(
-            bar=('=' * bar),
-            tip=('>' if bar < self.LENGTH else ''),
-            base='.' * (self.LENGTH - bar),
+            bar=(self.BAR * bar),
+            tip=(self.TIP if bar < self.LENGTH else self.BAR),
+            base=self.BASE * (self.LENGTH - bar),
             progress=int(self.progress * 100),
             current=self.current_num,
             max=self.max_num)

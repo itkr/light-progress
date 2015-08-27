@@ -55,5 +55,6 @@ class ProgressBar(object):
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
-        _ = self.echo('\n') if self.is_finished() else self.echo(
-            self._get_str(), 'FAIL')
+        if not self.is_finished():
+            self.echo(self._get_str(), 'FAIL')
+        self.echo('\n')

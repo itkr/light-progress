@@ -2,6 +2,18 @@
 
 import sys
 
+import enum
+
+MessageType = enum.Enum(
+    'MessageType',
+    '''
+    OK
+    SUCCESS
+    WARNING
+    FAIL
+    '''
+)
+
 
 class ProgressBar(object):
 
@@ -19,6 +31,21 @@ class ProgressBar(object):
     def progress(self):
         return float(self.current_num) / float(self.max_num)
 
+    def is_finished(self):
+        return self.max_num <= self.current_num
+
+    def forward(self):
+        message_type = MessageType.OK.value
+        self.current_num = min(self.max_num, self.current_num + self.unit_num)
+        if self.is_finished():
+            message_type = MessageType.SUCCESS.value
+        self._echo(self._get_str(), message_type)
+
+    def back(self):
+        message_type = MessageType.OK.value
+        self.current_num = max(0, self.current_num - self.unit_num)
+        self._echo(self._get_str(), message_type)
+
     def _get_str(self):
         bar = int(self.LENGTH * self.progress)
         return '[{bar}{tip}{base}] {progress}% ({current}/{max})'.format(
@@ -29,23 +56,12 @@ class ProgressBar(object):
             current=self.current_num,
             max=self.max_num)
 
-    def is_finished(self):
-        return self.max_num <= self.current_num
-
-    def forward(self):
-        self.current_num = min(self.max_num, self.current_num + self.unit_num)
-        self.echo(self._get_str(), 'OK')
-
-    def back(self):
-        self.current_num = max(0, self.current_num - self.unit_num)
-        self.echo(self._get_str(), 'OK')
-
-    def echo(self, message, message_type=None):
+    def _echo(self, message, message_type=None):
         color = {
-            'OK': '\033[94m',
-            'SUCCESS': '\033[92m',
-            'WARNING': '\033[93m',
-            'FAIL': '\033[91m',
+            MessageType.OK.value: '\033[94m',
+            MessageType.SUCCESS.value: '\033[92m',
+            MessageType.WARNING.value: '\033[93m',
+            MessageType.FAIL.value: '\033[91m',
         }.get(message_type)
         sys.stderr.write(
             ''.join([color, message, '\r\033[0m']) if color else message)
@@ -56,5 +72,5 @@ class ProgressBar(object):
 
     def __exit__(self, exc_type, exc_value, traceback):
         if not self.is_finished():
-            self.echo(self._get_str(), 'FAIL')
-        self.echo('\n')
+            self._echo(self._get_str(), MessageType.FAIL.value)
+        self._echo('\n')

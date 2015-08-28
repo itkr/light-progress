@@ -4,23 +4,8 @@ import sys
 
 import enum
 
-MessageType = enum.Enum(
-    'MessageType',
-    '''
-    OK
-    SUCCESS
-    WARNING
-    FAIL
-    '''
-)
 
-
-class ProgressBar(object):
-
-    LENGTH = 30
-    BAR = '='
-    TIP = '-'
-    BASE = '.'
+class ProgressBarBase(object):
 
     def __init__(self, max_num, unit_num=1):
         self.max_num = max_num
@@ -30,6 +15,14 @@ class ProgressBar(object):
     @property
     def progress(self):
         return float(self.current_num) / float(self.max_num)
+
+    @property
+    def percent(self):
+        return self.progress * 100
+
+    @property
+    def remaining(self):
+        return self.max_num - self.current_num
 
     def is_complete(self):
         return self.max_num <= self.current_num
@@ -42,39 +35,33 @@ class ProgressBar(object):
 
     def update(self, num):
         self.current_num = max(0, min(self.max_num, num))
-
-        message_type = MessageType.SUCCESS.value \
-            if self.is_complete() else MessageType.OK.value
-
-        self._echo(self._get_str(), message_type)
+        message_type = self.MessageType.SUCCESS.value \
+            if self.is_complete() else self.MessageType.OK.value
+        self._echo(self.get_str(), message_type)
 
     def start(self):
         self.update(0)
 
     def finish(self):
         if not self.is_complete():
-            self._echo(self._get_str(), MessageType.FAIL.value)
+            self._echo(self.get_str(), self.MessageType.FAIL.value)
         self._echo('\n')
 
-    def _get_str(self):
-        bar = int(self.LENGTH * self.progress)
-        return '[{bar}{tip}{base}] {progress}% ({current}/{max})'.format(
-            bar=(self.BAR * bar),
-            tip=(self.TIP if bar < self.LENGTH else self.BAR),
-            base=self.BASE * (self.LENGTH - bar),
-            progress=int(self.progress * 100),
-            current=self.current_num,
-            max=self.max_num)
+    def get_str(self):
+        raise NotImplementedError
+
+    def _get_message_format(self, message_type=None):
+        message_format = {
+            self.MessageType.OK.value: '\r\033[94m{message}\033[0m',
+            self.MessageType.SUCCESS.value: '\r\033[92m{message}\033[0m',
+            self.MessageType.WARNING.value: '\r\033[93m{message}\033[0m',
+            self.MessageType.FAIL.value: '\r\033[91m{message}\033[0m',
+        }.get(message_type)
+        return message_format or '\r{message}'
 
     def _echo(self, message, message_type=None):
-        color = {
-            MessageType.OK.value: '\033[94m',
-            MessageType.SUCCESS.value: '\033[92m',
-            MessageType.WARNING.value: '\033[93m',
-            MessageType.FAIL.value: '\033[91m',
-        }.get(message_type)
-        sys.stderr.write(
-            ''.join([color, message, '\r\033[0m']) if color else message)
+        message_format = self._get_message_format(message_type)
+        sys.stderr.write(message_format.format(message=message))
         sys.stderr.flush()
 
     def __enter__(self):
@@ -83,3 +70,34 @@ class ProgressBar(object):
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.finish()
+
+
+class StandardProgressBar(ProgressBarBase):
+    
+    LENGTH = 30
+    BAR = '='
+    TIP = '-'
+    UNDER = '.'
+
+    MessageType = enum.Enum(
+        'MessageType',
+        '''
+        OK
+        SUCCESS
+        WARNING
+        FAIL
+        '''
+    )
+
+    def get_str(self):
+        bar = int(self.LENGTH * self.progress)
+        return '[{bar}{tip}{under}] {percent}% ({current}/{max})'.format(
+            bar=self.BAR * bar,
+            tip=self.TIP if bar < self.LENGTH else self.BAR,
+            under=self.UNDER * (self.LENGTH - bar),
+            percent=int(self.percent),
+            current=self.current_num,
+            max=self.max_num)
+
+
+ProgressBar = StandardProgressBar

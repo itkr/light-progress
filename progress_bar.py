@@ -31,7 +31,7 @@ class ProgressBar(object):
     def progress(self):
         return float(self.current_num) / float(self.max_num)
 
-    def is_finished(self):
+    def is_complete(self):
         return self.max_num <= self.current_num
 
     def forward(self):
@@ -44,12 +44,15 @@ class ProgressBar(object):
         self.current_num = max(0, min(self.max_num, num))
 
         message_type = MessageType.SUCCESS.value \
-            if self.is_finished() else MessageType.OK.value
+            if self.is_complete() else MessageType.OK.value
 
         self._echo(self._get_str(), message_type)
 
+    def start(self):
+        self.update(0)
+
     def finish(self):
-        if not self.is_finished():
+        if not self.is_complete():
             self._echo(self._get_str(), MessageType.FAIL.value)
         self._echo('\n')
 
@@ -75,6 +78,7 @@ class ProgressBar(object):
         sys.stderr.flush()
 
     def __enter__(self):
+        self.start()
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):

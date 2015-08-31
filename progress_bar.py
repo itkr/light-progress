@@ -7,6 +7,16 @@ import enum
 
 class ProgressBarBase(object):
 
+    MessageType = enum.Enum(
+        'MessageType',
+        '''
+        OK
+        SUCCESS
+        WARNING
+        FAIL
+        '''
+    )
+
     def __init__(self, max_num, unit_num=1):
         self.max_num = max_num
         self.unit_num = unit_num
@@ -51,13 +61,7 @@ class ProgressBarBase(object):
         raise NotImplementedError
 
     def _get_message_format(self, message_type=None):
-        message_format = {
-            self.MessageType.OK.value: '\r\033[94m{message}\033[0m',
-            self.MessageType.SUCCESS.value: '\r\033[92m{message}\033[0m',
-            self.MessageType.WARNING.value: '\r\033[93m{message}\033[0m',
-            self.MessageType.FAIL.value: '\r\033[91m{message}\033[0m',
-        }.get(message_type)
-        return message_format or '\r{message}'
+        raise NotImplementedError
 
     def _echo(self, message, message_type=None):
         message_format = self._get_message_format(message_type)
@@ -73,21 +77,20 @@ class ProgressBarBase(object):
 
 
 class StandardProgressBar(ProgressBarBase):
-    
+
     LENGTH = 30
     BAR = '='
     TIP = '-'
     UNDER = '.'
 
-    MessageType = enum.Enum(
-        'MessageType',
-        '''
-        OK
-        SUCCESS
-        WARNING
-        FAIL
-        '''
-    )
+    def _get_message_format(self, message_type=None):
+        message_format = {
+            self.MessageType.OK.value: '\r\033[94m{message}\033[0m',
+            self.MessageType.SUCCESS.value: '\r\033[92m{message}\033[0m',
+            self.MessageType.WARNING.value: '\r\033[93m{message}\033[0m',
+            self.MessageType.FAIL.value: '\r\033[91m{message}\033[0m',
+        }.get(message_type)
+        return message_format or '\r{message}'
 
     def get_str(self):
         bar = int(self.LENGTH * self.progress)

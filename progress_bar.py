@@ -4,6 +4,8 @@ import sys
 
 import enum
 
+from datetime import datetime
+
 
 class ProgressBar(object):
 
@@ -11,6 +13,8 @@ class ProgressBar(object):
         self.max_num = max_num
         self.unit_num = unit_num
         self.current_num = 0
+        self.started_at = None
+        self.finished_at = None
 
     @classmethod
     def iteration(cls, iterable, call_back, unit_num=1):
@@ -45,9 +49,10 @@ class ProgressBar(object):
 
     def start(self):
         self.update(0)
+        self.started_at = datetime.now()
 
     def finish(self):
-        pass
+        self.finished_at = datetime.now()
 
     def __enter__(self):
         self.start()

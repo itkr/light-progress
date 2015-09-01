@@ -22,6 +22,13 @@ class ProgressBarBase(object):
         self.unit_num = unit_num
         self.current_num = 0
 
+    @classmethod
+    def iteration(cls, iterable, call_back, unit_num=1):
+        with cls(len(iterable), unit_num) as progress_bar:
+            for item in iterable:
+                call_back(item)
+                progress_bar.forward()
+
     @property
     def progress(self):
         return float(self.current_num) / float(self.max_num)

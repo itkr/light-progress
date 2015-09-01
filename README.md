@@ -7,12 +7,7 @@
 ```
 from time import sleep
 
-with ProgressBar(256, 1) as progress_bar:
-    while True:
-        if progress_bar.is_finished():
-            return
-        sleep(0.01)
-        progress_bar.forward()
+ProgressBar.iteration(range(256), lambda item: time.sleep(0.01))
 ```
 
 ### b

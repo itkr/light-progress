@@ -12,7 +12,7 @@ ProgressBarは大きく分けて３つのパターンが使えます。しかし
 from time import sleep
 
 n = 42
-progress_bar = ProgressBar(n)
+progress_bar = CommandLineProgressBar(n)
 progress_bar.start()
 for item in range(n):
     sleep(0.01 * item)
@@ -28,7 +28,7 @@ progress_bar.finish()
 from time import sleep
 
 n = 42
-with ProgressBar(n) as progress_bar:
+with CommandLineProgressBar(n) as progress_bar:
     for item in range(n):
         sleep(0.01 * item)
         progress_bar.forward()
@@ -41,7 +41,7 @@ with ProgressBar(n) as progress_bar:
 ```
 from time import sleep
 
-ProgressBar.iteration(range(42), lambda item: sleep(0.01 * item))
+CommandLineProgressBar.iteration(range(42), lambda item: sleep(0.01 * item))
 ```
 
 ## result

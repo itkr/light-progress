@@ -5,17 +5,7 @@ import sys
 import enum
 
 
-class ProgressBarBase(object):
-
-    MessageType = enum.Enum(
-        'MessageType',
-        '''
-        OK
-        SUCCESS
-        WARNING
-        FAIL
-        '''
-    )
+class ProgressBar(object):
 
     def __init__(self, max_num, unit_num=1):
         self.max_num = max_num
@@ -34,7 +24,7 @@ class ProgressBarBase(object):
         return float(self.current_num) / float(self.max_num)
 
     @property
-    def percent(self):
+    def percentage(self):
         return self.progress * 100
 
     @property
@@ -52,28 +42,12 @@ class ProgressBarBase(object):
 
     def update(self, num):
         self.current_num = max(0, min(self.max_num, num))
-        message_type = self.MessageType.SUCCESS.value \
-            if self.is_complete() else self.MessageType.OK.value
-        self._echo(self.get_str(), message_type)
 
     def start(self):
         self.update(0)
 
     def finish(self):
-        if not self.is_complete():
-            self._echo(self.get_str(), self.MessageType.FAIL.value)
-        self._echo('\n')
-
-    def get_str(self):
-        raise NotImplementedError
-
-    def _get_message_format(self, message_type=None):
-        raise NotImplementedError
-
-    def _echo(self, message, message_type=None):
-        message_format = self._get_message_format(message_type)
-        sys.stderr.write(message_format.format(message=message))
-        sys.stderr.flush()
+        pass
 
     def __enter__(self):
         self.start()
@@ -83,31 +57,67 @@ class ProgressBarBase(object):
         self.finish()
 
 
-class StandardProgressBar(ProgressBarBase):
+class CommandLineProgressBar(ProgressBar):
 
     LENGTH = 30
     BAR = '='
     TIP = '-'
     UNDER = '.'
 
-    def _get_message_format(self, message_type=None):
-        message_format = {
-            self.MessageType.OK.value: '\r\033[94m{message}\033[0m',
-            self.MessageType.SUCCESS.value: '\r\033[92m{message}\033[0m',
-            self.MessageType.WARNING.value: '\r\033[93m{message}\033[0m',
-            self.MessageType.FAIL.value: '\r\033[91m{message}\033[0m',
-        }.get(message_type)
-        return message_format or '\r{message}'
+    MessageType = enum.Enum(
+        'MessageType',
+        '''
+        COURSE
+        COMPLETE
+        WARNING
+        FAIL
+        '''
+    )
 
-    def get_str(self):
+    def update(self, num):
+        super(CommandLineProgressBar, self).update(num)
+        if self.is_complete():
+            self._write_complete()
+            return
+        self._write_course()
+
+    def finish(self):
+        super(CommandLineProgressBar, self).finish()
+        if not self.is_complete():
+            self._write_fail()
+        self._line_brake()
+
+    def _get_str(self):
         bar = int(self.LENGTH * self.progress)
-        return '[{bar}{tip}{under}] {percent}% ({current}/{max})'.format(
+        return '[{bar}{tip}{under}] {percentage}% ({current}/{max})'.format(
             bar=self.BAR * bar,
             tip=self.TIP if bar < self.LENGTH else self.BAR,
             under=self.UNDER * (self.LENGTH - bar),
-            percent=int(self.percent),
+            percentage=int(self.percentage),
             current=self.current_num,
             max=self.max_num)
 
+    def _get_message_format(self, message_type=None):
+        return {
+            self.MessageType.COURSE.value: '\r\033[94m{message}\033[0m',
+            self.MessageType.COMPLETE.value: '\r\033[92m{message}\033[0m',
+            self.MessageType.WARNING.value: '\r\033[93m{message}\033[0m',
+            self.MessageType.FAIL.value: '\r\033[91m{message}\033[0m',
+        }.get(message_type) or '\r{message}'
 
-ProgressBar = StandardProgressBar
+    def _write(self, message, message_type=None):
+        message_format = self._get_message_format(message_type)
+        sys.stderr.write(message_format.format(message=message))
+        sys.stderr.flush()
+
+    def _write_course(self):
+        self._write(self._get_str(), self.MessageType.COURSE.value)
+
+    def _write_fail(self):
+        self._write(self._get_str(), self.MessageType.FAIL.value)
+
+    def _write_complete(self):
+        self._write(self._get_str(), self.MessageType.COMPLETE.value)
+
+    def _line_brake(self):
+        self._write('\n')

@@ -15,6 +15,9 @@ class ProgressBar(object):
         self.current_num = 0
         self.started_at = None
         self.finished_at = None
+        self.updated_at = None
+        self.last_lap = 0
+        self.average_lap = 0
 
     @classmethod
     def iteration(cls, iterable, call_back, unit_num=1):
@@ -44,7 +47,15 @@ class ProgressBar(object):
     def back(self):
         self.update(self.current_num - self.unit_num)
 
+    def _lap(self):
+        now = datetime.now()
+        current_lap = (self.updated_at - now).total_seconds()
+        self.average_lap = (self.last_lap + current_lap) / 2
+        self.last_lap = current_lap
+        self.updated_at = now
+
     def update(self, num):
+        self._lap()
         self.current_num = max(0, min(self.max_num, num))
 
     def start(self):

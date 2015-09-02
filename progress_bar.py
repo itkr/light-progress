@@ -136,5 +136,8 @@ class CommandLineProgressBar(ProgressBar):
     def _write_complete(self):
         self._write(self._get_str(), self.MessageType.COMPLETE.value)
 
+    def _write_warning(self):
+        self._write(self._get_str(), self.MessageType.WARNING.value)
+
     def _line_brake(self):
         self._write('\n')

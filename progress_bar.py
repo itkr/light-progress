@@ -83,8 +83,8 @@ class CommandLineProgressBar(ProgressBar):
     MessageType = enum.Enum(
         'MessageType',
         '''
-        COURSE
         COMPLETE
+        COURSE
         WARNING
         FAIL
         '''
@@ -116,8 +116,8 @@ class CommandLineProgressBar(ProgressBar):
 
     def _get_message_format(self, message_type=None):
         return {
-            self.MessageType.COURSE.value: '\r\033[94m{message}\033[0m',
             self.MessageType.COMPLETE.value: '\r\033[92m{message}\033[0m',
+            self.MessageType.COURSE.value: '\r\033[94m{message}\033[0m',
             self.MessageType.WARNING.value: '\r\033[93m{message}\033[0m',
             self.MessageType.FAIL.value: '\r\033[91m{message}\033[0m',
         }.get(message_type) or '\r{message}'
@@ -127,17 +127,17 @@ class CommandLineProgressBar(ProgressBar):
         sys.stderr.write(message_format.format(message=message))
         sys.stderr.flush()
 
-    def _write_course(self):
-        self._write(self._get_str(), self.MessageType.COURSE.value)
-
-    def _write_fail(self):
-        self._write(self._get_str(), self.MessageType.FAIL.value)
-
     def _write_complete(self):
         self._write(self._get_str(), self.MessageType.COMPLETE.value)
 
+    def _write_course(self):
+        self._write(self._get_str(), self.MessageType.COURSE.value)
+
     def _write_warning(self):
         self._write(self._get_str(), self.MessageType.WARNING.value)
+
+    def _write_fail(self):
+        self._write(self._get_str(), self.MessageType.FAIL.value)
 
     def _line_brake(self):
         self._write('\n')

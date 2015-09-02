@@ -48,8 +48,8 @@ class ProgressBar(object):
         self.current_num = max(0, min(self.max_num, num))
 
     def start(self):
-        self.update(0)
         self.started_at = datetime.now()
+        self.update(0)
 
     def finish(self):
         self.finished_at = datetime.now()
@@ -88,6 +88,7 @@ class CommandLineProgressBar(ProgressBar):
 
     def finish(self):
         super(CommandLineProgressBar, self).finish()
+        self._write_course()
         if not self.is_complete():
             self._write_fail()
         self._line_brake()

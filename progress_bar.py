@@ -1,10 +1,9 @@
 # -*- coding:utf-8 -*-
 
 import sys
+from datetime import datetime
 
 import enum
-
-from datetime import datetime
 
 
 class ProgressBar(object):
@@ -49,8 +48,8 @@ class ProgressBar(object):
 
     def _lap(self):
         now = datetime.now()
-        current_lap = (self.updated_at - now).total_seconds()
-        self.average_lap = (self.last_lap + current_lap) / 2
+        current_lap = (now - (self.updated_at or now)).total_seconds()
+        self.average_lap = ((self.last_lap or current_lap) + current_lap) / 2
         self.last_lap = current_lap
         self.updated_at = now
 
@@ -73,12 +72,52 @@ class ProgressBar(object):
         self.finish()
 
 
-class CommandLineProgressBar(ProgressBar):
+class Widget(object):
+    pass
 
-    LENGTH = 30
-    BAR = '='
-    TIP = '-'
-    UNDER = '.'
+
+class Bar(Widget):
+
+    def __init__(self, length=30, bar='#', tip='>', under='.'):
+        self.length = length
+        self.bar = bar
+        self.tip = tip
+        self.under = under
+
+    def get_str(self, context):
+        bar_length = int(self.length * context.progress)
+        return '[{bar}{tip}{under}]'.format(
+            bar=self.bar * bar_length,
+            tip=self.tip if bar_length < self.length else self.bar,
+            under=self.under * (self.length - bar_length))
+
+
+class Percentage(Widget):
+
+    def get_str(self, context):
+        return '{percentage}%'.format(percentage=int(context.percentage))
+
+
+class Num(Widget):
+
+    def get_str(self, context):
+        return '({current}/{max})'.format(
+            current=context.current_num, max=context.max_num)
+
+
+class StartedAt(Widget):
+
+    def get_str(self, context):
+        return '{}'.format(context.started_at or '')
+
+
+class FinishedAt(Widget):
+
+    def get_str(self, context):
+        return '{}'.format(context.finished_at or '')
+
+
+class CommandLineProgressBar(ProgressBar):
 
     MessageType = enum.Enum(
         'MessageType',
@@ -90,29 +129,24 @@ class CommandLineProgressBar(ProgressBar):
         '''
     )
 
+    def __init__(self, max_num, unit_num=1, widgets=[]):
+        self.widgets = widgets or [Bar(), Percentage(), Num(),
+                                   StartedAt(), '-', FinishedAt()]
+        super(CommandLineProgressBar, self).__init__(max_num, unit_num)
+
     def update(self, num):
         super(CommandLineProgressBar, self).update(num)
-        if self.is_complete():
-            self._write_complete()
-            return
-        self._write_course()
+        if not self.is_complete():
+            self._write_course()
 
     def finish(self):
         super(CommandLineProgressBar, self).finish()
-        self._write_course()
-        if not self.is_complete():
-            self._write_fail()
+        self._write_complete() if self.is_complete() else self._write_fail()
         self._line_brake()
 
     def _get_str(self):
-        bar = int(self.LENGTH * self.progress)
-        return '[{bar}{tip}{under}] {percentage}% ({current}/{max})'.format(
-            bar=self.BAR * bar,
-            tip=self.TIP if bar < self.LENGTH else self.BAR,
-            under=self.UNDER * (self.LENGTH - bar),
-            percentage=int(self.percentage),
-            current=self.current_num,
-            max=self.max_num)
+        return ' '.join([widget.get_str(self) if isinstance(widget, Widget)
+                         else str(widget) for widget in self.widgets])
 
     def _get_message_format(self, message_type=None):
         return {

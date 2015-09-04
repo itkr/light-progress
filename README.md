@@ -51,3 +51,21 @@ CommandLineProgressBar.iteration(range(42), lambda item: sleep(0.01 * item))
 [===============-...............] 50% (21/42)
 [===============================] 100% (42/42)
 ```
+
+## widget
+
+`CommandLineProgressBar`はWidgetを使って表示形式を組み替えることが出来ます。
+
+```
+widget = [Bar(bar='=', tip='-'), Percentage(), Num()]
+CommandLineProgressBar.iteration(range(42), lambda item: sleep(0.01), widgets=widget)
+
+# [===============-...............] 50% (21/42)
+```
+
+```
+widget = [Percentage(), Num(), Bar(bar='#', tip='>')]
+CommandLineProgressBar.iteration(range(42), lambda item: sleep(0.01), widgets=widget)
+
+# 50% (21/42) [###############>...............]
+```

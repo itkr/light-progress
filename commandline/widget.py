@@ -32,7 +32,7 @@ class Percentage(Widget):
 class Num(Widget):
 
     def get_str(self, context):
-        return '({current}/{max})'.format(
+        return '{current}/{max}'.format(
             current=context.current_num, max=context.max_num)
 
 

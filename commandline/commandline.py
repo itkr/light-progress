@@ -20,10 +20,11 @@ class CommandLineProgressBar(ProgressBar):
         '''
     )
 
-    def __init__(self, max_num, unit_num=1, widgets=[]):
+    def __init__(self, max_num, unit_num=1, widgets=[], format_str=None):
         self.widgets = widgets or [
             widget.Bar(), widget.Percentage(), widget.Num(),
             widget.StartedAt(), '-', widget.FinishedAt()]
+        self.format_str = format_str or '{} ' * len(self.widgets)
         super(CommandLineProgressBar, self).__init__(max_num, unit_num)
 
     def update(self, num):
@@ -37,8 +38,8 @@ class CommandLineProgressBar(ProgressBar):
         self._line_brake()
 
     def _get_str(self):
-        return ' '.join([wid.get_str(self) if isinstance(wid, widget.Widget)
-                         else str(wid) for wid in self.widgets])
+        return self.format_str.format(
+            *[wid.get_str(self) for wid in self.widgets])
 
     def _get_message_format(self, message_type=None):
         return {

@@ -16,8 +16,8 @@ class ProgressBar(object):
         self.average_lap = 0
 
     @classmethod
-    def iteration(cls, iterable, call_back, unit_num=1, widgets=[]):
-        with cls(len(iterable), unit_num, widgets) as progress_bar:
+    def iteration(cls, iterable, call_back, **kwargs):
+        with cls(len(iterable), **kwargs) as progress_bar:
             for item in iterable:
                 call_back(item)
                 progress_bar.forward()

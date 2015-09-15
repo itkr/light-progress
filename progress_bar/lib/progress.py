@@ -3,7 +3,7 @@
 from datetime import datetime
 
 
-class ProgressBar(object):
+class Progress(object):
 
     def __init__(self, max_num, unit_num=1):
         self.max_num = max_num

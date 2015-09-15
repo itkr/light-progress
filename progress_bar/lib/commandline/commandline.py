@@ -4,11 +4,11 @@ import sys
 
 import enum
 
-from progress_bar import ProgressBar
+from ..progress import Progress
 from . import widget
 
 
-class CommandLineProgressBar(ProgressBar):
+class CommandLineProgressBar(Progress):
 
     MessageType = enum.Enum(
         'MessageType',

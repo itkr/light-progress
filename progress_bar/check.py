@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from time import sleep
-from commandline import CommandLineProgressBar, widget
+from lib.commandline import CommandLineProgressBar, widget
 
 
 def main():

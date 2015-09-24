@@ -1,11 +1,12 @@
 # -*- coding:utf-8 -*-
 
 from time import sleep
+
 from lib.commandline import CommandLineProgressBar, widget
 
 
 def main():
-    widgets = [widget.Bar(bar='-'), widget.Percentage(), widget.Num()]
+    widgets = [widget.Bar(under=' '), widget.Percentage(), widget.Num()]
     format_str = '{} {} ({})'
     CommandLineProgressBar.iteration(
         range(100),

@@ -4,8 +4,15 @@ import sys
 
 import enum
 
-from ..progress import Progress
 from . import widget
+from ..progress import Progress
+
+
+class Color(object):
+    RED = 'RED'
+    BLUE = 'BLUE'
+    GREEN = 'GREEN'
+    YELLOW = 'YELLOW'
 
 
 class CommandLineProgressBar(Progress):

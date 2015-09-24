@@ -9,7 +9,9 @@ class Widget(object):
 
 class Bar(Widget):
 
-    def __init__(self, length=30, bar='#', tip='>', under='.'):
+    def __init__(self, length=30, bar='█', tip='▉', under='.', before='[', after=']'):
+        self.before = before
+        self.after = after
         self.length = length
         self.bar = bar
         self.tip = tip
@@ -17,23 +19,34 @@ class Bar(Widget):
 
     def get_str(self, context):
         bar_length = int(self.length * context.progress)
-        return '[{bar}{tip}{under}]'.format(
+        return '{before}{bar}{tip}{under}{after}'.format(
+            before=self.before,
             bar=self.bar * bar_length,
             tip=self.tip if bar_length < self.length else self.bar,
-            under=self.under * (self.length - bar_length))
+            under=self.under * (self.length - bar_length),
+            after=self.after)
 
 
 class Percentage(Widget):
 
+    def __init__(self, percent='%'):
+        self.percent = percent
+
     def get_str(self, context):
-        return '{percentage}%'.format(percentage=int(context.percentage))
+        return '{percentage}{percent}'.format(
+            percentage=int(context.percentage), percent=self.percent)
 
 
 class Num(Widget):
 
+    def __init__(self, separate='/'):
+        self.separate = separate
+
     def get_str(self, context):
-        return '{current}/{max}'.format(
-            current=context.current_num, max=context.max_num)
+        return '{current}{separate}{max}'.format(
+            current=context.current_num,
+            separate=self.separate,
+            max=context.max_num)
 
 
 class StartedAt(Widget):

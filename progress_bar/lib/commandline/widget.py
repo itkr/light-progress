@@ -59,3 +59,9 @@ class FinishedAt(Widget):
 
     def get_str(self, context):
         return '{}'.format(context.finished_at or '')
+
+
+class ElapsedSeconds(Widget):
+
+    def get_str(self, context):
+        return '{}'.format(context.elapsed_seconds)

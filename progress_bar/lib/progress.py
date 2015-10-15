@@ -34,6 +34,14 @@ class Progress(object):
     def remaining(self):
         return self.max_num - self.current_num
 
+    @property
+    def elapsed_timedelta(self):
+        return (self.finished_at or datetime.now()) - self.started_at
+
+    @property
+    def elapsed_seconds(self):
+        return self.elapsed_timedelta.total_seconds()
+
     def is_complete(self):
         return self.max_num <= self.current_num
 

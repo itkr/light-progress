@@ -46,7 +46,8 @@ class CommandLineProgressBar(Progress):
 
     def _get_str(self):
         return self.format_str.format(
-            *[wid.get_str(self) for wid in self.widgets])
+            *[wid.get_str(self) if isinstance(
+                wid, widget.Widget) else str(wid) for wid in self.widgets])
 
     def _get_message_format(self, message_type=None):
         return {

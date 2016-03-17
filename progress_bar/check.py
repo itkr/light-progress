@@ -14,6 +14,11 @@ def main():
         widgets=widgets,
         format_str=format_str)
 
+    with CommandLineProgressBar(100) as progress_bar:
+        for _item in range(100):
+            sleep(0.01)
+            progress_bar.forward()
+
 
 if __name__ == '__main__':
     main()

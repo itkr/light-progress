@@ -2,7 +2,7 @@
 
 from time import sleep
 
-from lib.commandline import CommandLineProgressBar, widget
+from progress_bar.commandline import CommandLineProgressBar, widget
 
 
 def main():

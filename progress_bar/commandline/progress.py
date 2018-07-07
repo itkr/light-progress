@@ -2,30 +2,17 @@
 
 import sys
 
-import enum
-
 from . import widget
-from ..progress import Progress
-
-
-class Color(object):
-    RED = 'RED'
-    BLUE = 'BLUE'
-    GREEN = 'GREEN'
-    YELLOW = 'YELLOW'
+from ..core import Progress
 
 
 class CommandLineProgressBar(Progress):
 
-    MessageType = enum.Enum(
-        'MessageType',
-        '''
-        COMPLETE
-        COURSE
-        WARNING
-        FAIL
-        '''
-    )
+    class MessageType():
+        COMPLETE = 'COMPLETE'
+        COURSE = 'COURSE'
+        WARNING = 'WARNING'
+        FAIL = 'FAIL'
 
     def __init__(self, max_num, unit_num=1, widgets=[], format_str=None):
         self.widgets = widgets or [
@@ -51,10 +38,10 @@ class CommandLineProgressBar(Progress):
 
     def _get_message_format(self, message_type=None):
         return {
-            self.MessageType.COMPLETE.value: '\r\033[92m{message}\033[0m',
-            self.MessageType.COURSE.value: '\r\033[94m{message}\033[0m',
-            self.MessageType.WARNING.value: '\r\033[93m{message}\033[0m',
-            self.MessageType.FAIL.value: '\r\033[91m{message}\033[0m',
+            self.MessageType.COMPLETE: '\r\033[92m{message}\033[0m',
+            self.MessageType.COURSE: '\r\033[94m{message}\033[0m',
+            self.MessageType.WARNING: '\r\033[93m{message}\033[0m',
+            self.MessageType.FAIL: '\r\033[91m{message}\033[0m',
         }.get(message_type) or '\r{message}'
 
     def _write(self, message, message_type=None):
@@ -63,16 +50,16 @@ class CommandLineProgressBar(Progress):
         sys.stderr.flush()
 
     def _write_complete(self):
-        self._write(self._get_str(), self.MessageType.COMPLETE.value)
+        self._write(self._get_str(), self.MessageType.COMPLETE)
 
     def _write_course(self):
-        self._write(self._get_str(), self.MessageType.COURSE.value)
+        self._write(self._get_str(), self.MessageType.COURSE)
 
     def _write_warning(self):
-        self._write(self._get_str(), self.MessageType.WARNING.value)
+        self._write(self._get_str(), self.MessageType.WARNING)
 
     def _write_fail(self):
-        self._write(self._get_str(), self.MessageType.FAIL.value)
+        self._write(self._get_str(), self.MessageType.FAIL)
 
     def _line_brake(self):
         self._write('\n')

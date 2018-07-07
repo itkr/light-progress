@@ -13,7 +13,7 @@ setup(
     version="0.0.1",
     packages=['progress_bar'],
     description='Progress bar',
-    long_description='Simple progress bar',
+    long_description='Light progress reporting tool for Python',
     url='https://github.com/itkr/progress_bar',
     license='MIT',
 

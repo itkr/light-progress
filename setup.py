@@ -1,27 +1,30 @@
 # -*- encoding:utf-8 -*-
+
+import os
 from setuptools import setup
 
+from progress_bar import __version__
 
-def get_requirements():
-    with open('requirements.txt') as f:
-        requirements = f.read().split('\n')
-    return requirements
+# def get_requirements():
+#     with open('requirements.txt') as f:
+#         requirements = f.read().split('\n')
+#     return requirements
+
+with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
+    long_description = f.read()
 
 
 setup(
-    name="progress_bar",
-    version="0.0.1",
+    name='progress_bar',
+    version=__version__,
     packages=['progress_bar'],
-    description='Progress bar',
-    long_description='Light progress reporting tool for Python',
+    description='Light progress reporting tool for Python',
+    long_description=long_description,
     url='https://github.com/itkr/progress_bar',
     license='MIT',
-
     author='itkr',
     author_email='itkrst@gmail.com',
-
-    install_requires=get_requirements(),
-
+    # install_requires=get_requirements(),
     classifiers=[
           'Environment :: Console',
           'Intended Audience :: Developers',

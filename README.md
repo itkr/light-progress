@@ -57,7 +57,7 @@ Transfer iteration.
 ```python
 from time import sleep
 
-CommandLineProgressBar.iteration(range(42), lambda item: sleep(0.01))
+ProgressBar(range(42), lambda item: sleep(0.01))
 ```
 
 ## Colors
@@ -70,18 +70,18 @@ CommandLineProgressBar.iteration(range(42), lambda item: sleep(0.01))
 
 ## Widgets
 
-`CommandLineProgressBar` can change the display format using `widget`.
+`ProgressBar` can change the display format using `widget`.
 
 ```python
 widget = [Bar(bar='=', tip='-'), Percentage(), Num()]
-CommandLineProgressBar.iteration(range(42), lambda item: sleep(0.01), widgets=widget)
+ProgressBar.iteration(range(42), lambda item: sleep(0.01), widgets=widget)
 
 # [===============-...............] 50% (21/42)
 ```
 
 ```python
 widget = [Percentage(), Num(), Bar(bar='#', tip='>')]
-CommandLineProgressBar.iteration(range(42), lambda item: sleep(0.01), widgets=widget)
+ProgressBar.iteration(range(42), lambda item: sleep(0.01), widgets=widget)
 
 # 50% (21/42) [###############>...............]
 ```

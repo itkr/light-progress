@@ -4,7 +4,7 @@ This is progress reporting tool for Python
 
 ```python
 n = 42
-with CommandLineProgressBar(n) as progress_bar:
+with ProgressBar(n) as progress_bar:
     for item in range(n):
         sleep(0.01)
         progress_bar.forward()
@@ -26,7 +26,7 @@ Call `start` `forward` and `finish` yourself.
 from time import sleep
 
 n = 42
-progress_bar = CommandLineProgressBar(n)
+progress_bar = ProgressBar(n)
 progress_bar.start()
 
 for item in range(n):
@@ -44,7 +44,7 @@ Do iterations in `with`. `start` and `finish` do not have to be called explicitl
 from time import sleep
 
 n = 42
-with CommandLineProgressBar(n) as progress_bar:
+with ProgressBar(n) as progress_bar:
     for item in range(n):
         sleep(0.01)
         progress_bar.forward()

@@ -1,12 +1,26 @@
-# Progress bar
+# Light Progress
 
-## example
+This is progress reporting tool for Python
 
-ProgressBarは大きく分けて３つのパターンが使えます。しかし、最もスマートに書けるのは３つ目のパターンなのでその使用を推奨します。
+```python
+n = 42
+with CommandLineProgressBar(n) as progress_bar:
+    for item in range(n):
+        sleep(0.01)
+        progress_bar.forward()
+```
 
-### パターン1
+```python
+# [-..............................] 1% (1/42)
+# [===============-...............] 50% (21/42)
+# [===============================] 100% (42/42)
+```
 
-直感的な処理のパターンです。ProgressBarのインスタンスを作り、処理の前後でそれぞれ`start`と`finish`を呼びます。プログレスバーを進めるときに`foward`を呼びます。
+## Examples
+
+### Pattern 1
+
+Call `start` `forward` and `finish` yourself.
 
 ```python
 from time import sleep
@@ -14,15 +28,17 @@ from time import sleep
 n = 42
 progress_bar = CommandLineProgressBar(n)
 progress_bar.start()
+
 for item in range(n):
-    sleep(0.01 * item)
+    sleep(0.01)
     progress_bar.forward()
+
 progress_bar.finish()
 ```
 
-### パターン2
+### Pattern 2
 
-パターン1では明示的に`start`と`finish`を呼び出していますが、処理を忘れてしまう可能性があります。その場合はwithを使うことでそれらの呼び出しを省略できます。
+Do iterations in `with`. `start` and `finish` do not have to be called explicitly.
 
 ```python
 from time import sleep
@@ -30,31 +46,31 @@ from time import sleep
 n = 42
 with CommandLineProgressBar(n) as progress_bar:
     for item in range(n):
-        sleep(0.01 * item)
+        sleep(0.01)
         progress_bar.forward()
 ```
 
-### パターン3
+### Pattern 3
 
-操作対象のオブジェクトがIterableである場合は、`iteration`を用いてProgressBarにイテレーションを委譲することでコードをより簡潔に書くことが出来ます。
+Transfer iteration.
 
 ```python
 from time import sleep
 
-CommandLineProgressBar.iteration(range(42), lambda item: sleep(0.01 * item))
+CommandLineProgressBar.iteration(range(42), lambda item: sleep(0.01))
 ```
 
-## result
+## Colors
 
-```
-[-..............................] 1% (1/42)
-[===============-...............] 50% (21/42)
-[===============================] 100% (42/42)
-```
+| status      | color |
+|-------------|-------|
+| In progress | Blue  |
+| Success     | Green |
+| Failur      | Red   |
 
-## widget
+## Widgets
 
-`CommandLineProgressBar`はWidgetを使って表示形式を組み替えることが出来ます。
+`CommandLineProgressBar` can change the display format using `widget`.
 
 ```python
 widget = [Bar(bar='=', tip='-'), Percentage(), Num()]

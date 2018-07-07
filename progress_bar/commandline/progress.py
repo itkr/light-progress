@@ -6,7 +6,7 @@ from . import widget
 from ..core import Progress
 
 
-class CommandLineProgressBar(Progress):
+class ProgressBar(Progress):
 
     class MessageType():
         COMPLETE = 'COMPLETE'
@@ -19,15 +19,15 @@ class CommandLineProgressBar(Progress):
             widget.Bar(), widget.Percentage(), widget.Num(),
             widget.StartedAt(), '-', widget.FinishedAt()]
         self.format_str = format_str or '{} ' * len(self.widgets)
-        super(CommandLineProgressBar, self).__init__(max_num, unit_num)
+        super(ProgressBar, self).__init__(max_num, unit_num)
 
     def update(self, num):
-        super(CommandLineProgressBar, self).update(num)
+        super(ProgressBar, self).update(num)
         if not self.is_complete():
             self._write_course()
 
     def finish(self):
-        super(CommandLineProgressBar, self).finish()
+        super(ProgressBar, self).finish()
         self._write_complete() if self.is_complete() else self._write_fail()
         self._line_brake()
 

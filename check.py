@@ -2,13 +2,13 @@
 
 from time import sleep
 
-from progress_bar.commandline import CommandLineProgressBar, widget
+from progress_bar.commandline import ProgressBar, widget
 
 
 def test_widget():
     widgets = [widget.Bar(under=' '), widget.Percentage(), widget.Num()]
     format_str = '{} {} ({})'
-    CommandLineProgressBar.iteration(
+    ProgressBar.iteration(
         range(100),
         lambda item: sleep(0.01),
         widgets=widgets,
@@ -16,15 +16,17 @@ def test_widget():
 
 
 def test_default():
-    with CommandLineProgressBar(100) as progress_bar:
+    with ProgressBar(100) as progress_bar:
         for item in range(100):
             sleep(0.01)
             progress_bar.forward()
 
+    assert progress_bar.progress == 1.0
+
 
 def test_error():
     try:
-        with CommandLineProgressBar(100) as progress_bar:
+        with ProgressBar(100) as progress_bar:
             for item in range(100):
                 sleep(0.01)
                 if item >= 70:
@@ -32,6 +34,8 @@ def test_error():
                 progress_bar.forward()
     except Exception as e:
         print(e.message)
+
+    assert progress_bar.progress == 0.7
 
 
 def main():

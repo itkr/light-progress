@@ -80,15 +80,23 @@ from light_progress.commandline import widget
 ```
 
 ```python
-widgets = [widget.Bar(bar='=', tip='-'), widget.Percentage(), widget.Num()]
-ProgressBar.iteration(range(42), lambda item: sleep(0.01), widgets=widgets)
+widgets = [widget.Bar(bar='=', tip='-'),
+           widget.Percentage(),
+           widget.Num()]
+
+ProgressBar.iteration(
+    range(42), lambda item: sleep(0.01), widgets=widgets)
 
 # [===============-...............] 50% (21/42)
 ```
 
 ```python
-widgets = [widget.Percentage(), widget.Num(), widget.Bar(bar='#', tip='>')]
-ProgressBar.iteration(range(42), lambda item: sleep(0.01), widgets=widgets)
+widgets = [widget.Percentage(),
+           widget.Num(),
+           widget.Bar(bar='#', tip='>')]
+
+ProgressBar.iteration(
+    range(42), lambda item: sleep(0.01), widgets=widgets)
 
 # 50% (21/42) [###############>...............]
 ```

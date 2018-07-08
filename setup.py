@@ -3,7 +3,7 @@
 import os
 from setuptools import setup
 
-from progress_bar import __version__
+from light_progress import __version__
 
 # def get_requirements():
 #     with open('requirements.txt') as f:
@@ -15,12 +15,12 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
 
 
 setup(
-    name='progress_bar',
+    name='light-progress',
     version=__version__,
-    packages=['progress_bar'],
+    packages=['light_progress'],
     description='Light progress reporting tool for Python',
     long_description=long_description,
-    url='https://github.com/itkr/progress_bar',
+    url='https://github.com/itkr/light-progress',
     license='MIT',
     author='itkr',
     author_email='itkrst@gmail.com',

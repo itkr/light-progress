@@ -24,6 +24,7 @@ Call `start` `forward` and `finish` yourself.
 
 ```python
 from time import sleep
+from light_progress.commandline import ProgressBar
 
 n = 42
 progress_bar = ProgressBar(n)
@@ -42,6 +43,7 @@ Do iterations in `with`. `start` and `finish` do not have to be called explicitl
 
 ```python
 from time import sleep
+from light_progress.commandline import ProgressBar
 
 n = 42
 with ProgressBar(n) as progress_bar:
@@ -56,6 +58,7 @@ Transfer iteration.
 
 ```python
 from time import sleep
+from light_progress.commandline import ProgressBar
 
 ProgressBar(range(42), lambda item: sleep(0.01))
 ```
@@ -73,15 +76,19 @@ ProgressBar(range(42), lambda item: sleep(0.01))
 `ProgressBar` can change the display format using `widget`.
 
 ```python
-widget = [Bar(bar='=', tip='-'), Percentage(), Num()]
-ProgressBar.iteration(range(42), lambda item: sleep(0.01), widgets=widget)
+from light_progress.commandline import widget
+```
+
+```python
+widgets = [widget.Bar(bar='=', tip='-'), widget.Percentage(), widget.Num()]
+ProgressBar.iteration(range(42), lambda item: sleep(0.01), widgets=widgets)
 
 # [===============-...............] 50% (21/42)
 ```
 
 ```python
-widget = [Percentage(), Num(), Bar(bar='#', tip='>')]
-ProgressBar.iteration(range(42), lambda item: sleep(0.01), widgets=widget)
+widgets = [widget.Percentage(), widget.Num(), widget.Bar(bar='#', tip='>')]
+ProgressBar.iteration(range(42), lambda item: sleep(0.01), widgets=widgets)
 
 # 50% (21/42) [###############>...............]
 ```

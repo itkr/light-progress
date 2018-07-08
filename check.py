@@ -2,7 +2,7 @@
 
 from time import sleep
 
-from progress_bar.commandline import ProgressBar, widget
+from light_progress.commandline import ProgressBar, widget
 
 
 def test_widget():

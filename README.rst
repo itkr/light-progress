@@ -17,6 +17,13 @@ This is progress reporting tool for Python
    # [===============-...............] 50% (21/42)
    # [===============================] 100% (42/42)
 
+Installation
+------------
+
+.. code:: sh
+
+   pip install light-progress
+
 Examples
 --------
 

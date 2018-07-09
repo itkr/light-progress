@@ -16,6 +16,12 @@ with ProgressBar(n) as progress_bar:
 # [===============================] 100% (42/42)
 ```
 
+## Installation
+
+```sh
+pip install light-progress
+```
+
 ## Examples
 
 ### Pattern 1

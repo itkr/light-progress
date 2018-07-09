@@ -10,7 +10,7 @@ from light_progress import __version__
 #         requirements = f.read().split('\n')
 #     return requirements
 
-with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
+with open(os.path.join(os.path.dirname(__file__), 'README.rst'), 'r') as f:
     long_description = f.read()
 
 

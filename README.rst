@@ -74,7 +74,7 @@ Transfer iteration.
    from time import sleep
    from light_progress.commandline import ProgressBar
 
-   ProgressBar(range(42), lambda item: sleep(0.01))
+   ProgressBar.iteration(range(42), lambda item: sleep(0.01))
 
 Colors
 ------

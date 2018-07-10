@@ -1,9 +1,11 @@
 # -*- coding:utf-8 -*-
 
+from __future__ import absolute_import, print_function, unicode_literals
+
 import sys
 
 from . import widget
-from ..core import Progress
+from .core import Progress
 
 
 class ProgressBar(Progress):

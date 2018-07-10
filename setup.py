@@ -1,6 +1,7 @@
 # -*- encoding:utf-8 -*-
 
 import os
+
 from setuptools import setup
 
 from light_progress import __version__
@@ -26,10 +27,10 @@ setup(
     author_email='itkrst@gmail.com',
     # install_requires=get_requirements(),
     classifiers=[
-          'Environment :: Console',
-          'Intended Audience :: Developers',
-          'Operating System :: OS Independent',
-          'Programming Language :: Python',
-          'Topic :: Utilities'
+        'Environment :: Console',
+        'Intended Audience :: Developers',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Topic :: Utilities'
     ]
 )

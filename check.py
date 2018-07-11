@@ -7,17 +7,6 @@ from time import sleep
 from light_progress.commandline import ProgressBar, widget
 
 
-def test_widget():
-    print('test_widget, iteration')
-    widgets = [widget.Bar(under=' '), widget.Percentage(), widget.Num()]
-    format_str = '{} {} ({})'
-    ProgressBar.iteration(
-        range(100),
-        lambda item: sleep(0.01),
-        widgets=widgets,
-        format_str=format_str)
-
-
 def test_default():
     print('test_default')
     with ProgressBar(100) as progress_bar:
@@ -26,6 +15,28 @@ def test_default():
             progress_bar.forward()
 
     assert progress_bar.progress == 1.0
+
+
+def test_iteration():
+    print('test_iteration')
+    ProgressBar.iteration(range(100), lambda item: sleep(0.01))
+
+
+def test_generation():
+    print('test_generataion')
+    for item in ProgressBar.generation(range(100)):
+        sleep(0.01)
+
+
+def test_widget():
+    print('test_widget (iteration)')
+    widgets = [widget.Bar(under=' '), widget.Percentage(), widget.Num()]
+    format_str = '{} {} ({})'
+    ProgressBar.iteration(
+        range(100),
+        lambda item: sleep(0.01),
+        widgets=widgets,
+        format_str=format_str)
 
 
 def test_error():
@@ -43,17 +54,12 @@ def test_error():
     assert progress_bar.progress == 0.7
 
 
-def test_generation():
-    print('test_generataion')
-    for item in ProgressBar.generation(range(100)):
-        sleep(0.01)
-
-
 def main():
-    test_widget()
     test_default()
-    test_error()
+    test_iteration()
     test_generation()
+    test_widget()
+    test_error()
 
 
 if __name__ == '__main__':

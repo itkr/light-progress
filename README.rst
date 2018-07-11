@@ -96,7 +96,7 @@ Widgets
 
 .. code:: python
 
-   from light_progress.commandline import widget
+   from light_progress import widget
 
 .. code:: python
 

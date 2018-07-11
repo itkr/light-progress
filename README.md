@@ -82,7 +82,7 @@ ProgressBar.iteration(range(42), lambda item: sleep(0.01))
 `ProgressBar` can change the display format using `widget`.
 
 ```python
-from light_progress.commandline import widget
+from light_progress import widget
 ```
 
 ```python

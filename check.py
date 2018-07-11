@@ -33,7 +33,7 @@ def test_error():
                     raise Exception('test error')
                 progress_bar.forward()
     except Exception as e:
-        print(e.message)
+        print(str(e))
 
     assert progress_bar.progress == 0.7
 

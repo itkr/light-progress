@@ -6,6 +6,7 @@ from light_progress.commandline import ProgressBar, widget
 
 
 def test_widget():
+    print('test_widget, iteration')
     widgets = [widget.Bar(under=' '), widget.Percentage(), widget.Num()]
     format_str = '{} {} ({})'
     ProgressBar.iteration(
@@ -16,6 +17,7 @@ def test_widget():
 
 
 def test_default():
+    print('test_default')
     with ProgressBar(100) as progress_bar:
         for item in range(100):
             sleep(0.01)
@@ -25,6 +27,7 @@ def test_default():
 
 
 def test_error():
+    print('test_error')
     try:
         with ProgressBar(100) as progress_bar:
             for item in range(100):
@@ -38,10 +41,17 @@ def test_error():
     assert progress_bar.progress == 0.7
 
 
+def test_generation():
+    print('test_generataion')
+    for item in ProgressBar.generation(range(100)):
+        sleep(0.01)
+
+
 def main():
     test_widget()
     test_default()
     test_error()
+    test_generation()
 
 
 if __name__ == '__main__':

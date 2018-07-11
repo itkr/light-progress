@@ -24,6 +24,13 @@ class Progress(object):
                 call_back(item)
                 progress_bar.forward()
 
+    @classmethod
+    def generation(cls, iterable, **kwargs):
+        with cls(len(iterable), **kwargs) as progress_bar:
+            for item in iterable:
+                progress_bar.forward()
+                yield item
+
     @property
     def progress(self):
         return float(self.current_num) / float(self.max_num)

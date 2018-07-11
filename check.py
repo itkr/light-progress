@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
 
+from __future__ import absolute_import, print_function, unicode_literals
+
 from time import sleep
 
 from light_progress.commandline import ProgressBar, widget
@@ -36,7 +38,7 @@ def test_error():
                     raise Exception('test error')
                 progress_bar.forward()
     except Exception as e:
-        print(str(e))
+        pass
 
     assert progress_bar.progress == 0.7
 

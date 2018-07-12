@@ -13,9 +13,9 @@ This is progress reporting tool for Python
 
 .. code:: python
 
-   # [-..............................] 1% (1/42)
-   # [===============-...............] 50% (21/42)
-   # [===============================] 100% (42/42)
+   # [▉..............................] 1% (1/42)
+   # [███████████████▉...............] 50% (21/42)
+   # [███████████████████████████████] 100% (42/42)
 
 Installation
 ------------
@@ -27,15 +27,20 @@ Installation
 Examples
 --------
 
+Import
+~~~~~~
+
+.. code:: python
+
+   from time import sleep
+   from light_progress.commandline import ProgressBar
+
 Pattern 1
 ~~~~~~~~~
 
 Call ``start`` ``forward`` and ``finish`` yourself.
 
 .. code:: python
-
-   from time import sleep
-   from light_progress.commandline import ProgressBar
 
    n = 42
    progress_bar = ProgressBar(n)
@@ -55,9 +60,6 @@ called explicitly.
 
 .. code:: python
 
-   from time import sleep
-   from light_progress.commandline import ProgressBar
-
    n = 42
    with ProgressBar(n) as progress_bar:
        for item in range(n):
@@ -67,14 +69,23 @@ called explicitly.
 Pattern 3
 ~~~~~~~~~
 
-Transfer iteration.
+Transfer iteration. You don’t have to call any ``ProgressBar`` methods
+yourself.
 
 .. code:: python
 
-   from time import sleep
-   from light_progress.commandline import ProgressBar
-
    ProgressBar.iteration(range(42), lambda item: sleep(0.01))
+
+Pattern 4
+~~~~~~~~~
+
+Transfer generation. You don’t have to call any ``ProgressBar`` methods
+yourself.
+
+.. code:: python
+
+   for item in ProgressBar.generation(range(42)):
+       sleep(0.01)
 
 Colors
 ------
@@ -113,9 +124,39 @@ Widgets
 
    widgets = [widget.Percentage(),
               widget.Num(),
+              'loading...',
               widget.Bar(bar='#', tip='>')]
 
    ProgressBar.iteration(
        range(42), lambda item: sleep(0.01), widgets=widgets)
 
-   # 50% (21/42) [###############>...............]
+   # 50% (21/42) loading... [###############>...............]
+
+Formats
+-------
+
+.. code:: python
+
+   format_str = '{} {} ({})'
+
+   widgets = [widget.Bar(), widget.Percentage(), widget.Num()]
+   ProgressBar.iteration(
+       range(100),
+       lambda item: sleep(0.01),
+       widgets=widgets,
+       format_str=format_str)
+
+   # [███████████████████████████████] 100% (100/100)
+
+.. code:: python
+
+   format_str = '{} *** {} *** ({})'
+
+   widgets = [widget.Bar(), widget.Percentage(), widget.Num()]
+   ProgressBar.iteration(
+       range(100),
+       lambda item: sleep(0.01),
+       widgets=widgets,
+       format_str=format_str)
+
+   # [███████████████████████████████] *** 100% *** (100/100)

@@ -71,10 +71,9 @@ class ProgressBar(Progress):
 
 class Loading(ProgressBar):
 
-    def __init__(self, max_num, unit_num=1, elements=('-', '\\', '|', '/')):
-        # TODO: elementsをwidgetに
-        super(Loading, self).__init__(max_num, unit_num)
-        self.elements = elements
+    def __init__(self, max_num, unit_num=1):
+        super(Loading, self).__init__(
+            max_num, unit_num, widgets=[widget.Spinner(), widget.Num()])
         self.elements_cursor = 0
         self.loop = threading.Thread(target=self._loop)
         self.loop.start()
@@ -84,8 +83,3 @@ class Loading(ProgressBar):
             self._write_course()
             self.elements_cursor += 1
             sleep(0.1)
-
-    def _get_str(self):
-        if self.finished_at:
-            return '*'
-        return self.elements[self.elements_cursor % len(self.elements)]

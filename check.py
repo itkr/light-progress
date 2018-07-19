@@ -56,10 +56,7 @@ def test_error():
 
 def test_loading():
     print('test_loading (iteration)')
-    with Loading(100) as loading:
-        for item in range(100):
-            sleep(0.01)
-            loading.forward()
+    Loading.iteration(range(100), lambda item: sleep(0.01))
 
 
 def main():

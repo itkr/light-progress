@@ -67,3 +67,14 @@ class ElapsedSeconds(Widget):
 
     def get_str(self, context):
         return '{}'.format(context.elapsed_seconds)
+
+
+class Spinner(Widget):
+
+    def __init__(self, elements=('-', '\\', '|', '/')):
+        self.elements = elements
+
+    def get_str(self, context):
+        if context.finished_at:
+            return '*'
+        return self.elements[context.elements_cursor % len(self.elements)]

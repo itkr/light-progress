@@ -3,6 +3,8 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import sys
+import threading
+from time import sleep
 
 from . import widget
 from .core import Progress
@@ -65,3 +67,25 @@ class ProgressBar(Progress):
 
     def _line_brake(self):
         self._write('\n')
+
+
+class Loading(ProgressBar):
+
+    def __init__(self, max_num, unit_num=1, elements=('-', '\\', '|', '/')):
+        # TODO: elementsをwidgetに
+        super(Loading, self).__init__(max_num, unit_num)
+        self.elements = elements
+        self.elements_cursor = 0
+        self.loop = threading.Thread(target=self._loop)
+        self.loop.start()
+
+    def _loop(self):
+        while not self.finished_at:
+            self._write_course()
+            self.elements_cursor += 1
+            sleep(0.1)
+
+    def _get_str(self):
+        if self.finished_at:
+            return '*'
+        return self.elements[self.elements_cursor % len(self.elements)]

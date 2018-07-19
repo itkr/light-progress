@@ -4,7 +4,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from time import sleep
 
-from light_progress.commandline import ProgressBar, widget
+from light_progress.commandline import Loading, ProgressBar, widget
 
 
 def test_default():
@@ -54,12 +54,21 @@ def test_error():
     assert progress_bar.progress == 0.7
 
 
+def test_loading():
+    print('test_loading (iteration)')
+    with Loading(100) as loading:
+        for item in range(100):
+            sleep(0.01)
+            loading.forward()
+
+
 def main():
     test_default()
     test_iteration()
     test_generation()
     test_widget()
     test_error()
+    test_loading()
 
 
 if __name__ == '__main__':

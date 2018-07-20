@@ -71,9 +71,11 @@ class ProgressBar(Progress):
 
 class Loading(ProgressBar):
 
-    def __init__(self, max_num, unit_num=1):
-        super(Loading, self).__init__(
-            max_num, unit_num, widgets=[widget.Spinner(), widget.Num()])
+    def __init__(self, *args, **kwargs):
+        kwargs['widgets'] = kwargs.get(
+            'widgets', [widget.Spinner(), widget.Num()])
+        super(Loading, self).__init__(*args, **kwargs)
+
         self.elements_cursor = 0
         self.loop = threading.Thread(target=self._loop)
         self.loop.start()

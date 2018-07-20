@@ -59,6 +59,22 @@ def test_loading():
     Loading.iteration(range(100), lambda item: sleep(0.01))
 
 
+def test_loading_widget():
+    print('test_loading (iteration)')
+    elements = [u'\U0001f318', u'\U0001f317', u'\U0001f316', u'\U0001f315',
+                u'\U0001f314', u'\U0001f313', u'\U0001f312', u'\U0001f311']
+    widgets = [widget.Spinner(elements=elements, success='🌝', failure='🌚'),
+               widget.Num()]
+    Loading.iteration(range(100), lambda item: sleep(0.01), widgets=widgets)
+
+    elements = ['🕐', '🕜', '🕑', '🕝', '🕒', '🕞', '🕓', '🕟',
+                '🕔', '🕠', '🕕', '🕡', '🕖', '🕢', '🕗', '🕣',
+                '🕘', '🕤', '🕙', '🕥', '🕚', '🕦', '🕛', '🕧']
+    widgets = [widget.Spinner(elements=elements, success='✔︎', failure='❌'),
+               widget.Num()]
+    Loading.iteration(range(100), lambda item: sleep(0.01), widgets=widgets)
+
+
 def main():
     test_default()
     test_iteration()
@@ -66,6 +82,7 @@ def main():
     test_widget()
     test_error()
     test_loading()
+    test_loading_widget()
 
 
 if __name__ == '__main__':

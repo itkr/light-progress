@@ -71,11 +71,12 @@ class ElapsedSeconds(Widget):
 
 class Spinner(Widget):
 
-    def __init__(self, elements=('-', '\\', '|', '/'), finished='*'):
+    def __init__(self, elements=('-', '\\', '|', '/'), success='*', failure='*'):
         self.elements = elements
-        self.finished = finished
+        self.success = success
+        self.failure = failure
 
     def get_str(self, context):
         if context.finished_at:
-            return self.finished
+            return self.success if context.is_complete() else self.failure
         return self.elements[context.elements_cursor % len(self.elements)]

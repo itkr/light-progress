@@ -84,7 +84,7 @@ for item in ProgressBar.generation(range(42)):
 |-------------|-------|
 | In progress | Blue  |
 | Success     | Green |
-| Failur      | Red   |
+| Failure     | Red   |
 
 ## Widgets
 

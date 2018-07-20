@@ -97,7 +97,7 @@ Colors
 +-------------+-------+
 | Success     | Green |
 +-------------+-------+
-| Failur      | Red   |
+| Failure     | Red   |
 +-------------+-------+
 
 Widgets

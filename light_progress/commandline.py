@@ -12,6 +12,9 @@ from .core import Progress
 
 class ProgressBar(Progress):
 
+    default_widgets = [widget.Bar(), widget.Percentage(), widget.Num(),
+                       widget.StartedAt(), '-', widget.FinishedAt()]
+
     class MessageType():
         COMPLETE = 'COMPLETE'
         COURSE = 'COURSE'
@@ -74,9 +77,7 @@ class ProgressBar(Progress):
 
 class Loading(ProgressBar):
 
-    @property
-    def default_widgets(self):
-        return [widget.Spinner(), widget.Num()]
+    default_widgets = [widget.Spinner(), widget.Num()]
 
     def start(self):
         self.elements_cursor = 0

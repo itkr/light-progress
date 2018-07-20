@@ -19,11 +19,14 @@ class ProgressBar(Progress):
         FAIL = 'FAIL'
 
     def __init__(self, max_num, unit_num=1, widgets=[], format_str=None):
-        self.widgets = widgets or [
-            widget.Bar(), widget.Percentage(), widget.Num(),
-            widget.StartedAt(), '-', widget.FinishedAt()]
+        self.widgets = widgets or self.default_widgets
         self.format_str = format_str or '{} ' * len(self.widgets)
         super(ProgressBar, self).__init__(max_num, unit_num)
+
+    @property
+    def default_widgets(self):
+        return [widget.Bar(), widget.Percentage(), widget.Num(),
+                widget.StartedAt(), '-', widget.FinishedAt()]
 
     def update(self, num):
         super(ProgressBar, self).update(num)
@@ -71,14 +74,15 @@ class ProgressBar(Progress):
 
 class Loading(ProgressBar):
 
-    def __init__(self, *args, **kwargs):
-        kwargs['widgets'] = kwargs.get(
-            'widgets', [widget.Spinner(), widget.Num()])
-        super(Loading, self).__init__(*args, **kwargs)
+    @property
+    def default_widgets(self):
+        return [widget.Spinner(), widget.Num()]
 
+    def start(self):
         self.elements_cursor = 0
         self.loop = threading.Thread(target=self._loop)
         self.loop.start()
+        super(Loading, self).start()
 
     def _loop(self):
         while not self.finished_at:

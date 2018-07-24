@@ -81,9 +81,9 @@ class Loading(ProgressBar):
 
     def start(self):
         self.elements_cursor = 0
+        super(Loading, self).start()
         self.loop = threading.Thread(target=self._loop)
         self.loop.start()
-        super(Loading, self).start()
 
     def _loop(self):
         while not self.finished_at:

@@ -30,7 +30,8 @@ def test_generation():
 
 def test_widget():
     print('test_widget (iteration)')
-    widgets = [widget.Bar(under=' '), widget.Percentage(), widget.Num()]
+    widgets = [widget.Bar(under=' ', tip='─', bar='─', before='├', after='┤'),
+               widget.Percentage(), widget.Num()]
     format_str = '{} {} ({})'
     ProgressBar.iteration(
         range(100),

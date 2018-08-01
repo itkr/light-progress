@@ -3,11 +3,7 @@
 This is progress reporting tool for Python
 
 ```python
-n = 42
-with ProgressBar(n) as progress_bar:
-    for item in range(n):
-        sleep(0.01)
-        progress_bar.forward()
+ProgressBar.iteration(range(42), lambda item: sleep(0.01))
 ```
 
 ```python

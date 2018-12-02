@@ -6,12 +6,9 @@ from setuptools import setup
 
 from light_progress import __version__
 
-# def get_requirements():
-#     with open('requirements.txt') as f:
-#         requirements = f.read().split('\n')
-#     return requirements
 
-with open(os.path.join(os.path.dirname(__file__), 'README.rst'), 'r') as f:
+document_file = os.path.join(os.path.dirname(__file__), 'README.rst')
+with open(document_file, 'r', encoding='utf-8_sig') as f:
     long_description = f.read()
 
 
@@ -25,7 +22,6 @@ setup(
     license='MIT',
     author='itkr',
     author_email='itkrst@gmail.com',
-    # install_requires=get_requirements(),
     classifiers=[
         'Environment :: Console',
         'Intended Audience :: Developers',

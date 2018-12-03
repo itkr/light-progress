@@ -1,11 +1,11 @@
 # -*- encoding:utf-8 -*-
 
 import os
+from io import open
 
 from setuptools import setup
 
 from light_progress import __version__
-
 
 document_file = os.path.join(os.path.dirname(__file__), 'README.rst')
 with open(document_file, 'r', encoding='utf-8_sig') as f:

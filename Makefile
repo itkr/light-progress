@@ -10,3 +10,6 @@ test-deploy: build
 build:
 	# python setup.py sdist bdist_wheel
 	python setup.py sdist
+
+test-install:
+	pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple light-progress

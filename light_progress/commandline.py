@@ -56,8 +56,8 @@ class ProgressBar(Progress):
 
     def _write(self, message, message_type=None):
         message_format = self._get_message_format(message_type)
-        sys.stderr.write(message_format.format(message=message))
-        sys.stderr.flush()
+        sys.stdout.write(message_format.format(message=message))
+        sys.stdout.flush()
 
     def _write_complete(self):
         self._write(self._get_str(), self.MessageType.COMPLETE)

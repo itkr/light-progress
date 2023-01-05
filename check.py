@@ -4,7 +4,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from time import sleep
 
-from light_progress.commandline import Loading, ProgressBar, widget
+from light_progress.commandline import (Colors, Loading, MessageType,
+                                        ProgressBar, widget)
 
 
 def test_default():
@@ -38,6 +39,15 @@ def test_widget():
         lambda item: sleep(0.01),
         widgets=widgets,
         format_str=format_str)
+
+
+def test_colors():
+    print('test_colors')
+    colors = {
+        MessageType.COURSE: Colors.YELLOW,
+        MessageType.COMPLETE: Colors.BLUE,
+    }
+    ProgressBar.iteration(range(100), lambda item: sleep(0.01), colors=colors)
 
 
 def test_error():
@@ -81,6 +91,7 @@ def main():
     test_iteration()
     test_generation()
     test_widget()
+    test_colors()
     test_error()
     test_loading()
     test_loading_widget()

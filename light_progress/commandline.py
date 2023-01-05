@@ -10,26 +10,40 @@ from . import widget
 from .core import Progress
 
 
+class Colors():
+    RED = '\033[91m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    BLUE = '\033[94m'
+    RESET = '\033[0m'
+
+
+class MessageType():
+    COMPLETE = 'COMPLETE'
+    COURSE = 'COURSE'
+    WARNING = 'WARNING'
+    FAIL = 'FAIL'
+
+
 class ProgressBar(Progress):
 
     default_widgets = [widget.Bar(), widget.Percentage(), widget.Num(),
                        widget.StartedAt(), '-', widget.FinishedAt()]
 
-    class MessageType():
-        COMPLETE = 'COMPLETE'
-        COURSE = 'COURSE'
-        WARNING = 'WARNING'
-        FAIL = 'FAIL'
+    default_colors = {
+        MessageType.COMPLETE: Colors.GREEN,
+        MessageType.COURSE: Colors.BLUE,
+        MessageType.WARNING: Colors.YELLOW,
+        MessageType.FAIL: Colors.RED,
+    }
 
-    def __init__(self, max_num, unit_num=1, widgets=[], format_str=None):
+    def __init__(self, max_num, unit_num=1, widgets=[], format_str=None, colors=None):
         self.widgets = widgets or self.default_widgets
         self.format_str = format_str or '{} ' * len(self.widgets)
+        self.colors = self.default_colors.copy()
+        if colors:
+            self.colors.update(colors)
         super(ProgressBar, self).__init__(max_num, unit_num)
-
-    @property
-    def default_widgets(self):
-        return [widget.Bar(), widget.Percentage(), widget.Num(),
-                widget.StartedAt(), '-', widget.FinishedAt()]
 
     def update(self, num):
         super(ProgressBar, self).update(num)
@@ -46,30 +60,26 @@ class ProgressBar(Progress):
             *[wid.get_str(self) if isinstance(
                 wid, widget.Widget) else str(wid) for wid in self.widgets])
 
-    def _get_message_format(self, message_type=None):
-        return {
-            self.MessageType.COMPLETE: '\r\033[92m{message}\033[0m',
-            self.MessageType.COURSE: '\r\033[94m{message}\033[0m',
-            self.MessageType.WARNING: '\r\033[93m{message}\033[0m',
-            self.MessageType.FAIL: '\r\033[91m{message}\033[0m',
-        }.get(message_type) or '\r{message}'
+    def _decolate_text(self, message, message_type=None):
+        color = self.colors.get(message_type, '')
+        message_format = ''.join(['\r', color, '{message}', Colors.RESET])
+        return message_format.format(message=message)
 
     def _write(self, message, message_type=None):
-        message_format = self._get_message_format(message_type)
-        sys.stdout.write(message_format.format(message=message))
+        sys.stdout.write(self._decolate_text(message, message_type))
         sys.stdout.flush()
 
     def _write_complete(self):
-        self._write(self._get_str(), self.MessageType.COMPLETE)
+        self._write(self._get_str(), MessageType.COMPLETE)
 
     def _write_course(self):
-        self._write(self._get_str(), self.MessageType.COURSE)
+        self._write(self._get_str(), MessageType.COURSE)
 
     def _write_warning(self):
-        self._write(self._get_str(), self.MessageType.WARNING)
+        self._write(self._get_str(), MessageType.WARNING)
 
     def _write_fail(self):
-        self._write(self._get_str(), self.MessageType.FAIL)
+        self._write(self._get_str(), MessageType.FAIL)
 
     def _line_brake(self):
         self._write('\n')

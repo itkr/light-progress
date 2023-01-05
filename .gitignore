@@ -2,3 +2,4 @@
 build/
 dist/
 light_progress.egg-info/
+README.rst

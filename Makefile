@@ -1,12 +1,16 @@
-.PHONY: check convert-readme build deploy test-deploy test-install
+.PHONY: check remove-build convert-readme build deploy test-deploy test-install
 
 check:
 	python check.py
 
+remove-build:
+	rm -f README.rst
+	rm -rf build/ dist/ light_progress.egg-info/
+
 convert-readme:
 	docker run --rm --volume "`pwd`:/data" --user `id -u`:`id -g` pandoc/latex README.md -o README.rst
 
-build: convert-readme
+build: remove-build convert-readme
 	python setup.py sdist bdist_wheel
 	# python setup.py sdist
 

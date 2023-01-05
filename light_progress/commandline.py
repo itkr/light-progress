@@ -10,6 +10,13 @@ from . import widget
 from .core import Progress
 
 
+class _Colors():
+    RED = '\033[91m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    BLUE = '\033[94m'
+
+
 class ProgressBar(Progress):
 
     default_widgets = [widget.Bar(), widget.Percentage(), widget.Num(),

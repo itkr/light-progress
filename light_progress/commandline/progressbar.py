@@ -6,8 +6,8 @@ import sys
 import threading
 from time import sleep
 
+from ..core import MessageType, Progress
 from . import widget
-from ..core import Progress
 
 
 class Colors:
@@ -16,13 +16,6 @@ class Colors:
     YELLOW = '\033[93m'
     BLUE = '\033[94m'
     RESET = '\033[0m'
-
-
-class MessageType:
-    COMPLETE = 'COMPLETE'
-    COURSE = 'COURSE'
-    WARNING = 'WARNING'
-    FAIL = 'FAIL'
 
 
 class ProgressBar(Progress):

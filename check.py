@@ -82,7 +82,7 @@ def test_loading_widget():
                 '🕘', '🕤', '🕙', '🕥', '🕚', '🕦', '🕛', '🕧']
     widgets = [widget.Spinner(elements=elements, success='✔︎', failure='❌'),
                widget.Num(), widget.ElapsedSeconds()]
-    Loading.iteration(range(100), lambda item: sleep(0.11), widgets=widgets)
+    Loading.iteration(range(100), lambda item: sleep(0.01), widgets=widgets)
 
 
 def main():

@@ -2,12 +2,14 @@
 
 from __future__ import absolute_import, print_function, unicode_literals
 
-from .commandline import Colors, Loading, MessageType, ProgressBar, widget
+from .commandline import Colors, Loading, ProgressBar, widget
+from .core import MessageType, Progress
 
 __all__ = [
     'Colors',
     'Loading',
     'MessageType',
+    'Progress',
     'ProgressBar',
     'widget',
 ]

@@ -5,6 +5,13 @@ from __future__ import absolute_import, print_function, unicode_literals
 from datetime import datetime
 
 
+class MessageType:
+    COMPLETE = 'COMPLETE'
+    COURSE = 'COURSE'
+    WARNING = 'WARNING'
+    FAIL = 'FAIL'
+
+
 class Progress(object):
 
     def __init__(self, max_num, unit_num=1):

@@ -4,8 +4,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from time import sleep
 
-from light_progress.commandline import (Colors, Loading, MessageType,
-                                        ProgressBar, widget)
+from light_progress import (Colors, Loading, MessageType, ProgressBar, widget)
 
 
 def test_default():

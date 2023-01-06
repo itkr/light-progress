@@ -2,7 +2,8 @@
 
 from __future__ import absolute_import, print_function, unicode_literals
 
-from .commandline import Colors, Loading, MessageType, ProgressBar, widget
+from .main import Colors, Loading, MessageType, ProgressBar
+from . import widget
 
 __all__ = [
     'Colors',
@@ -11,5 +12,3 @@ __all__ = [
     'ProgressBar',
     'widget',
 ]
-
-__version__ = '0.4.0.0'

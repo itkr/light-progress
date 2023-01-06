@@ -7,10 +7,10 @@ import threading
 from time import sleep
 
 from . import widget
-from .core import Progress
+from ..core import Progress
 
 
-class Colors():
+class Colors:
     RED = '\033[91m'
     GREEN = '\033[92m'
     YELLOW = '\033[93m'
@@ -18,7 +18,7 @@ class Colors():
     RESET = '\033[0m'
 
 
-class MessageType():
+class MessageType:
     COMPLETE = 'COMPLETE'
     COURSE = 'COURSE'
     WARNING = 'WARNING'
@@ -27,8 +27,14 @@ class MessageType():
 
 class ProgressBar(Progress):
 
-    default_widgets = [widget.Bar(), widget.Percentage(), widget.Num(),
-                       widget.StartedAt(), '-', widget.FinishedAt()]
+    default_widgets = [
+        widget.Bar(),
+        widget.Percentage(),
+        widget.Num(),
+        widget.StartedAt(),
+        '-',
+        widget.FinishedAt(),
+    ]
 
     default_colors = {
         MessageType.COMPLETE: Colors.GREEN,
@@ -57,8 +63,11 @@ class ProgressBar(Progress):
 
     def _get_str(self):
         return self.format_str.format(
-            *[wid.get_str(self) if isinstance(
-                wid, widget.Widget) else str(wid) for wid in self.widgets])
+            *[
+                wid.get_str(self) if isinstance(wid, widget.Widget) else str(wid)
+                for wid in self.widgets
+            ]
+        )
 
     def _decolate_text(self, message, message_type=None):
         color = self.colors.get(message_type, '')

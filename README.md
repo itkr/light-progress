@@ -1,6 +1,6 @@
 # Light Progress
 
-This is progress reporting tool for Python
+This is a progress reporting tool for Python.
 
 ```python
 ProgressBar.iteration(range(42), lambda item: sleep(0.01))
@@ -24,12 +24,12 @@ pip install light-progress
 
 ```python
 from time import sleep
-from light_progress.commandline import ProgressBar
+from light_progress import ProgressBar
 ```
 
 ### Pattern 1
 
-Call `start` `forward` and `finish` yourself.
+Call `start()` `forward()` and `finish()` yourself.
 
 ```python
 n = 42
@@ -45,7 +45,8 @@ progress_bar.finish()
 
 ### Pattern 2
 
-Do iterations in `with`. `start` and `finish` do not have to be called explicitly.
+You can execute a iteration within `with` statement.
+You don't have to call `start()` and `finish()` explicitly.
 
 ```python
 n = 42
@@ -84,7 +85,7 @@ for item in ProgressBar.generation(range(42)):
 
 ## Widgets
 
-`ProgressBar` can change the display format using `widget`.
+`ProgressBar` can change its display format using `widget`.
 
 ```python
 from light_progress import widget

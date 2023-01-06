@@ -2,8 +2,8 @@
 
 from __future__ import absolute_import, print_function, unicode_literals
 
-from .commandline import Colors, Loading, ProgressBar, widget
-from .core import MessageType, Progress
+from .commandline import Colors, Loading, MessageType, ProgressBar, widget
+from .core import Progress
 
 __all__ = [
     'Colors',

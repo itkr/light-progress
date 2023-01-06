@@ -6,8 +6,15 @@ import sys
 import threading
 from time import sleep
 
-from ..core import MessageType, Progress
+from ..core import Progress
 from . import widget
+
+
+class MessageType():
+    COMPLETE = 'COMPLETE'
+    COURSE = 'COURSE'
+    WARNING = 'WARNING'
+    FAIL = 'FAIL'
 
 
 class Colors():

@@ -10,19 +10,19 @@ from ..core import Progress
 from . import widget
 
 
-class MessageType():
-    COMPLETE = 'COMPLETE'
-    COURSE = 'COURSE'
-    WARNING = 'WARNING'
-    FAIL = 'FAIL'
-
-
 class Colors():
     RED = '\033[91m'
     GREEN = '\033[92m'
     YELLOW = '\033[93m'
     BLUE = '\033[94m'
     RESET = '\033[0m'
+
+
+class MessageType():
+    COMPLETE = 'COMPLETE'
+    COURSE = 'COURSE'
+    WARNING = 'WARNING'
+    FAIL = 'FAIL'
 
 
 class ProgressBar(Progress):

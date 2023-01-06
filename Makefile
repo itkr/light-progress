@@ -1,11 +1,11 @@
 .PHONY: check remove-build convert-readme build deploy test-deploy test-install
 
 check:
-	python check.py
+	python src/check.py
 
 remove-build:
 	rm -f README.rst
-	rm -rf build/ dist/ light_progress.egg-info/
+	rm -rf build/ dist/ src/light_progress.egg-info/
 	find . -name '*.pyc' -delete
 
 convert-readme:

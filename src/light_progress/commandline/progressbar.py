@@ -6,8 +6,8 @@ import sys
 import threading
 from time import sleep
 
+from ..core import Progress
 from . import widget
-from .core import Progress
 
 
 class Colors():

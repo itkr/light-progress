@@ -8,10 +8,6 @@ class Widget(object):
         raise NotImplementedError
 
 
-class LoadingWiget(Widget):
-    pass
-
-
 class Bar(Widget):
     def __init__(self, length=30, bar='█', tip='▉', under='.', before='[', after=']'):
         self.before = before
@@ -67,13 +63,18 @@ class ElapsedSeconds(Widget):
         return '{}'.format(context.elapsed_seconds)
 
 
-class Spinner(LoadingWiget):
+class Spinner(Widget):
     def __init__(self, elements=('-', '\\', '|', '/'), success='*', failure='*'):
         self.elements = elements
         self.success = success
         self.failure = failure
 
+    def _get_cursor(self, context):
+        if hasattr(context, 'elements_cursor'):
+            return context.elements_cursor
+        return int(context.elapsed_timedelta.microseconds / 100000)
+
     def get_str(self, context):
         if context.finished_at:
             return self.success if context.is_complete() else self.failure
-        return self.elements[context.elements_cursor % len(self.elements)]
+        return self.elements[self._get_cursor(context) % len(self.elements)]

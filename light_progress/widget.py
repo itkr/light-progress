@@ -76,7 +76,12 @@ class Spinner(Widget):
         self.success = success
         self.failure = failure
 
+    def _get_cursor(self, context):
+        if hasattr(context, 'elements_cursor'):
+            return context.elements_cursor
+        return int(context.elapsed_timedelta.microseconds / 100000)
+
     def get_str(self, context):
         if context.finished_at:
             return self.success if context.is_complete() else self.failure
-        return self.elements[context.elements_cursor % len(self.elements)]
+        return self.elements[self._get_cursor(context) % len(self.elements)]

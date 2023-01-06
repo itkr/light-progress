@@ -10,7 +10,7 @@ from ..core import MessageType, Progress
 from . import widget
 
 
-class Colors:
+class Colors():
     RED = '\033[91m'
     GREEN = '\033[92m'
     YELLOW = '\033[93m'
@@ -20,14 +20,8 @@ class Colors:
 
 class ProgressBar(Progress):
 
-    default_widgets = [
-        widget.Bar(),
-        widget.Percentage(),
-        widget.Num(),
-        widget.StartedAt(),
-        '-',
-        widget.FinishedAt(),
-    ]
+    default_widgets = [widget.Bar(), widget.Percentage(), widget.Num(),
+                       widget.StartedAt(), '-', widget.FinishedAt()]
 
     default_colors = {
         MessageType.COMPLETE: Colors.GREEN,
@@ -56,11 +50,8 @@ class ProgressBar(Progress):
 
     def _get_str(self):
         return self.format_str.format(
-            *[
-                wid.get_str(self) if isinstance(wid, widget.Widget) else str(wid)
-                for wid in self.widgets
-            ]
-        )
+            *[wid.get_str(self) if isinstance(
+                wid, widget.Widget) else str(wid) for wid in self.widgets])
 
     def _decolate_text(self, message, message_type=None):
         color = self.colors.get(message_type, '')

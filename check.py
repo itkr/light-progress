@@ -4,7 +4,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from time import sleep
 
-from light_progress import (Colors, Loading, MessageType, ProgressBar, widget)
+from light_progress.commandline import Colors, Loading, ProgressBar, widget
+from light_progress.core import MessageType
 
 
 def test_default():
@@ -82,7 +83,7 @@ def test_loading_widget():
                 '🕘', '🕤', '🕙', '🕥', '🕚', '🕦', '🕛', '🕧']
     widgets = [widget.Spinner(elements=elements, success='✔︎', failure='❌'),
                widget.Num(), widget.ElapsedSeconds()]
-    Loading.iteration(range(100), lambda item: sleep(0.01), widgets=widgets)
+    Loading.iteration(range(100), lambda item: sleep(0.11), widgets=widgets)
 
 
 def main():

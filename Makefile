@@ -6,6 +6,7 @@ check:
 remove-build:
 	rm -f README.rst
 	rm -rf build/ dist/ light_progress.egg-info/
+	find . -name '*.pyc' -delete
 
 convert-readme:
 	docker run --rm --volume "`pwd`:/data" --user `id -u`:`id -g` pandoc/latex README.md -o README.rst

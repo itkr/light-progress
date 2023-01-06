@@ -8,7 +8,6 @@ from .progressbar import Colors, Loading, ProgressBar
 __all__ = [
     'Colors',
     'Loading',
-    'MessageType',
     'ProgressBar',
     'widget',
 ]

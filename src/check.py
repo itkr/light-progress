@@ -5,7 +5,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 from time import sleep
 
 from light_progress.commandline import (Colors, Loading, MessageType,
-                                        ProgressBar, widget)
+                                        ProgressBar, puts, widget)
 
 
 def test_default():
@@ -16,6 +16,22 @@ def test_default():
             progress_bar.forward()
 
     assert progress_bar.progress == 1.0
+
+
+def test_puts():
+    print('test_puts')
+    for item in ProgressBar.generation(range(100)):
+        sleep(0.01)
+        if item % 20 == 0:
+            puts(item)
+
+    print('test_puts')
+    with ProgressBar(100) as progress_bar:
+        for item in range(100):
+            sleep(0.01)
+            progress_bar.forward()
+            if item % 20 == 0:
+                progress_bar.puts(item)
 
 
 def test_iteration():
@@ -31,7 +47,7 @@ def test_generation():
 
 def test_widget():
     print('test_widget (iteration)')
-    widgets = [widget.Spinner(), widget.Bar(under=' ', tip='─', bar='─', before='├', after='┤'),
+    widgets = [widget.Spinner(), widget.Bar(under='-', tip='>', bar='*', before='|', after='|'),
                widget.Percentage(), widget.Num()]
     format_str = '{} {} ({})'
     ProgressBar.iteration(
@@ -83,13 +99,14 @@ def test_loading_widget():
                 '🕘', '🕤', '🕙', '🕥', '🕚', '🕦', '🕛', '🕧']
     widgets = [widget.Spinner(elements=elements, success='✔︎', failure='❌'),
                widget.Num(), widget.ElapsedSeconds()]
-    Loading.iteration(range(100), lambda item: sleep(0.11), widgets=widgets)
+    Loading.iteration(range(100), lambda item: sleep(0.01), widgets=widgets)
 
 
 def main():
     test_default()
     test_iteration()
     test_generation()
+    test_puts()
     test_widget()
     test_colors()
     test_error()

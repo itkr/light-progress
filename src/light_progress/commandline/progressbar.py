@@ -10,6 +10,11 @@ from ..core import Progress
 from . import widget
 
 
+def puts(text):
+    sys.stdout.write(''.join(['\n', '\33[1A', '\033[2K', str(text), '\33[1B']))
+    sys.stdout.flush()
+
+
 class Colors():
     RED = '\033[91m'
     GREEN = '\033[92m'
@@ -54,6 +59,10 @@ class ProgressBar(Progress):
         super(ProgressBar, self).finish()
         self._write_complete() if self.is_complete() else self._write_fail()
         self._line_brake()
+
+    def puts(self, text):
+        puts(text)
+        self._write_course()
 
     def _get_str(self):
         return self.format_str.format(

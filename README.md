@@ -83,6 +83,20 @@ for item in ProgressBar.generation(range(42)):
 | Success     | Green |
 | Failure     | Red   |
 
+### Customize
+
+```python
+from light_progress import Colors, MessageType
+```
+
+```python
+colors = {
+    MessageType.COURSE: Colors.YELLOW,
+    MessageType.COMPLETE: Colors.BLUE,
+}
+ProgressBar.iteration(range(100), lambda item: sleep(0.01), colors=colors)
+```
+
 ## Widgets
 
 `ProgressBar` can change its display format using `widget`.
@@ -141,4 +155,22 @@ ProgressBar.iteration(
     format_str=format_str)
 
 # [███████████████████████████████] *** 100% *** (100/100)
+```
+
+## Print text
+
+```python
+from light_progress import puts
+```
+
+```python
+for item in ProgressBar.generation(range(42)):
+    sleep(0.01)
+    puts('item {}'.format(item))
+
+# ...
+# item 17
+# item 18
+# item 19
+# [███████████████▉...............] 50% (21/42)
 ```

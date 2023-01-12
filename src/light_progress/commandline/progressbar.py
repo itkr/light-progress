@@ -109,3 +109,21 @@ class Loading(ProgressBar):
             self._write_course()
             self.elements_cursor += 1
             sleep(0.1)
+
+
+class IterableProgressBar(ProgressBar):
+
+    def __init__(self, iterable, **kwargs):
+        self.iterable = iterable
+        super(IterableProgressBar, self).__init__(len(iterable), **kwargs)
+
+    def _loop(self):
+        self.start()
+        try:
+            for item in self.iterable:
+                self.forward()
+                yield item
+        finally:
+            self.finish()
+
+    __iter__ = _loop

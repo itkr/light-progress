@@ -4,8 +4,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from time import sleep
 
-from light_progress.commandline import (Colors, Loading, MessageType,
-                                        ProgressBar, puts, widget)
+from light_progress.commandline import (Colors, IterableProgressBar, Loading,
+                                        MessageType, ProgressBar, puts, widget)
 
 
 def test_default():
@@ -102,6 +102,15 @@ def test_loading_widget():
     Loading.iteration(range(100), lambda item: sleep(0.01), widgets=widgets)
 
 
+def test_iterable():
+    print('test_iterable')
+    progress_bar = IterableProgressBar(range(100))
+    for item in progress_bar:
+        sleep(0.01)
+        if item % 20 == 0:
+            progress_bar.puts(item)
+
+
 def main():
     test_default()
     test_iteration()
@@ -112,6 +121,7 @@ def main():
     test_error()
     test_loading()
     test_loading_widget()
+    test_iterable()
 
 
 if __name__ == '__main__':

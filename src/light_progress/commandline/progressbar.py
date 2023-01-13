@@ -11,29 +11,35 @@ from . import widget
 
 
 def puts(text):
-    sys.stdout.write(''.join(['\n', '\33[1A', '\033[2K', str(text), '\33[1B']))
+    sys.stdout.write("".join(["\n", "\33[1A", "\033[2K", str(text), "\33[1B"]))
     sys.stdout.flush()
 
 
-class Colors():
-    RED = '\033[91m'
-    GREEN = '\033[92m'
-    YELLOW = '\033[93m'
-    BLUE = '\033[94m'
-    RESET = '\033[0m'
+class Colors:
+    RED = "\033[91m"
+    GREEN = "\033[92m"
+    YELLOW = "\033[93m"
+    BLUE = "\033[94m"
+    RESET = "\033[0m"
 
 
-class MessageType():
-    COMPLETE = 'COMPLETE'
-    COURSE = 'COURSE'
-    WARNING = 'WARNING'
-    FAIL = 'FAIL'
+class MessageType:
+    COMPLETE = "COMPLETE"
+    COURSE = "COURSE"
+    WARNING = "WARNING"
+    FAIL = "FAIL"
 
 
 class ProgressBar(Progress):
 
-    default_widgets = [widget.Bar(), widget.Percentage(), widget.Num(),
-                       widget.StartedAt(), '-', widget.FinishedAt()]
+    default_widgets = [
+        widget.Bar(),
+        widget.Percentage(),
+        widget.Num(),
+        widget.StartedAt(),
+        "-",
+        widget.FinishedAt(),
+    ]
 
     default_colors = {
         MessageType.COMPLETE: Colors.GREEN,
@@ -44,7 +50,7 @@ class ProgressBar(Progress):
 
     def __init__(self, max_num, unit_num=1, widgets=[], format_str=None, colors=None):
         self.widgets = widgets or self.default_widgets
-        self.format_str = format_str or '{} ' * len(self.widgets)
+        self.format_str = format_str or "{} " * len(self.widgets)
         self.colors = self.default_colors.copy()
         if colors:
             self.colors.update(colors)
@@ -66,12 +72,15 @@ class ProgressBar(Progress):
 
     def _get_str(self):
         return self.format_str.format(
-            *[wid.get_str(self) if isinstance(
-                wid, widget.Widget) else str(wid) for wid in self.widgets])
+            *[
+                wid.get_str(self) if isinstance(wid, widget.Widget) else str(wid)
+                for wid in self.widgets
+            ]
+        )
 
     def _decolate_text(self, message, message_type=None):
-        color = self.colors.get(message_type, '')
-        message_format = ''.join(['\r', color, '{message}', Colors.RESET])
+        color = self.colors.get(message_type, "")
+        message_format = "".join(["\r", color, "{message}", Colors.RESET])
         return message_format.format(message=message)
 
     def _write(self, message, message_type=None):
@@ -91,7 +100,7 @@ class ProgressBar(Progress):
         self._write(self._get_str(), MessageType.FAIL)
 
     def _line_brake(self):
-        self._write('\n')
+        self._write("\n")
 
 
 class Loading(ProgressBar):

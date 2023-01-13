@@ -6,7 +6,6 @@ from datetime import datetime
 
 
 class Progress(object):
-
     def __init__(self, max_num, unit_num=1):
         self.max_num = max_num
         self.unit_num = unit_num

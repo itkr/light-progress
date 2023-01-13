@@ -6,10 +6,10 @@ from . import widget
 from .progressbar import Colors, Loading, MessageType, ProgressBar, puts
 
 __all__ = [
-    'Colors',
-    'Loading',
-    'MessageType',
-    'ProgressBar',
-    'puts',
-    'widget',
+    "Colors",
+    "Loading",
+    "MessageType",
+    "ProgressBar",
+    "puts",
+    "widget",
 ]
